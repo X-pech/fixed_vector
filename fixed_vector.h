@@ -110,19 +110,19 @@ public:
     }
 
     reverse_iterator rbegin() {
-        return reverse_iterator(data_ + size_ - 1);
+        return reverse_iterator(data_ + size_);
     }
 
     const_reverse_iterator rbegin() const {
-        return const_reverse_iterator(data_ + size_ - 1);
+        return const_reverse_iterator(data_ + size_);
     }
 
     reverse_iterator rend() {
-        return reverse_iterator(data_ - 1);
+        return reverse_iterator(data_ );
     }
 
     const_reverse_iterator rend() const {
-        return const_reverse_iterator(data_ - 1);
+        return const_reverse_iterator(data_);
     }
 
     iterator erase(const_iterator ci) {
@@ -165,7 +165,9 @@ public:
         }
 
         auto index = static_cast<size_t>(ci - begin());
-        bcot(index);
+        if (index != size_)
+            bcot(index);
+
         for (size_t i = size_; i > index; i--) {
             new (data_ + i) T(data_[i - 1]);
             data_[i - 1].~T();
@@ -207,7 +209,7 @@ private:
         return data_[index];
     }
 
-    size_t size_;
+    size_t size_ {};
     const size_t capacity_ = S;
     T* data_ = reinterpret_cast<T*>(operator new(S * sizeof(T)));
 };
